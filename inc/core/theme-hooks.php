@@ -141,6 +141,13 @@ function astra_header() {
 }
 
 /**
+ * Site Custom Header
+ */
+function astra_custom_header() {
+	do_action( 'astra_custom_header' );
+}
+
+/**
  * Masthead Top
  */
 function astra_masthead_top() {
@@ -364,6 +371,14 @@ function astra_sidebars_after() {
  */
 function astra_footer() {
 	do_action( 'astra_footer' );
+}
+
+/**
+ * Custom <footer> hooks
+ *
+ */
+function astra_custom_footer() {
+	do_action( 'astra_custom_footer' );
 }
 
 /**

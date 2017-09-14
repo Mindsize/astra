@@ -23,6 +23,8 @@
 
 		<?php astra_footer(); ?>
 
+		<?php astra_custom_footer(); ?>
+
 		<?php astra_footer_after(); ?>
 
 	</div><!-- #page -->

@@ -32,6 +32,8 @@
 	<?php astra_header_before(); ?>
 
 	<?php astra_header(); ?>
+
+	<?php astra_custom_header(); ?>
 	
 	<?php astra_header_after(); ?>
 
