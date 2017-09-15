@@ -375,7 +375,6 @@ function astra_footer() {
 
 /**
  * Custom <footer> hooks
- *
  */
 function astra_custom_footer() {
 	do_action( 'astra_custom_footer' );
