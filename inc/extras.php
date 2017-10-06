@@ -90,19 +90,8 @@ if ( ! function_exists( 'astra_body_classes' ) ) {
 		$classes[]   = esc_attr( 'astra-' . ASTRA_THEME_VERSION );
 
 		// Transparent Header.
-		$enable_trans_header 	= astra_get_option( 'transparent-header-enable' );
-		if ( '1' == $enable_trans_header ) {
-
-			$disable_trans_archive 	= astra_get_option( 'transparent-header-disable-archive' );
-			$show_trans_header 		= true;
-			
-			if( is_front_page() || ( is_archive() && '1' == $disable_trans_archive ) ) {
-				$show_trans_header = false;
-			}
-
-			if ( $show_trans_header ) {
-				$classes[] = 'ast-theme-transparent-header';
-			}
+		if ( astra_is_transparent_header() ) {
+			$classes[] = 'ast-theme-transparent-header';
 		}
 
 		return $classes;
@@ -162,15 +151,26 @@ if ( ! function_exists( 'astra_logo' ) ) {
 		$site_tagline         = astra_get_option( 'display-site-tagline' );
 		$display_site_tagline = astra_get_option( 'display-site-title' );
 		$html                 = '';
+		$is_trans_header 	  = astra_is_transparent_header();
+		$has_custom_logo 	  = has_custom_logo();
 
-		$has_custom_logo = apply_filters( 'astra_has_custom_logo', has_custom_logo() );
+		if ( $is_trans_header ) {
+			$has_custom_logo = true;			
+		}
+
+		$has_custom_logo = apply_filters( 'astra_has_custom_logo', $has_custom_logo );
 
 		// Site logo.
 		if ( $has_custom_logo ) {
 
+				
 			if ( apply_filters( 'astra_replace_logo_width', true ) ) {
-				add_filter( 'wp_get_attachment_image_src', 'astra_replace_header_logo', 10, 4 );
-				add_filter( 'wp_get_attachment_image_attributes', 'astra_replace_header_attr', 10, 3 );
+				if ( $is_trans_header ) {
+					add_filter( 'get_custom_logo', 'astra_replace_trans_header_logo', 10, 2 );
+				}else{
+					add_filter( 'wp_get_attachment_image_src', 'astra_replace_header_logo', 10, 4 );
+					add_filter( 'wp_get_attachment_image_attributes', 'astra_replace_header_attr', 10, 3 );
+				}
 			}
 
 			$html .= '<span class="site-logo-img">';
@@ -178,8 +178,12 @@ if ( ! function_exists( 'astra_logo' ) ) {
 			$html .= '</span>';
 
 			if ( apply_filters( 'astra_replace_logo_width', true ) ) {
-				remove_filter( 'wp_get_attachment_image_src', 'astra_replace_header_logo', 10 );
-				remove_filter( 'wp_get_attachment_image_attributes', 'astra_replace_header_attr', 10 );
+				if ( $is_trans_header ) {
+					add_filter( 'get_custom_logo', 'astra_replace_trans_header_logo', 10, 2 );
+				}else{
+					remove_filter( 'wp_get_attachment_image_src', 'astra_replace_header_logo', 10 );
+					remove_filter( 'wp_get_attachment_image_attributes', 'astra_replace_header_attr', 10 );
+				}
 			}
 		}
 
@@ -1172,7 +1176,7 @@ endif; // End if().
 
 
 /**
- * Replace heade logo.
+ * Replace header logo.
  */
 if ( ! function_exists( 'astra_replace_header_logo' ) ) :
 
@@ -1204,7 +1208,7 @@ if ( ! function_exists( 'astra_replace_header_logo' ) ) :
 endif; // End if().
 
 /**
- * Function to check if it is Internet Explorer
+ * Replace header logo attributes.
  */
 if ( ! function_exists( 'astra_replace_header_attr' ) ) :
 
@@ -1252,6 +1256,105 @@ if ( ! function_exists( 'astra_replace_header_attr' ) ) :
 endif; // End if().
 
 /**
+ * Replace transparent header logo.
+ */
+if ( ! function_exists( 'astra_replace_trans_header_logo' ) ) :
+
+	/**
+	 * Replace transparent header logo.
+	 *
+	 * @param array  $image Size.
+	 * @param int    $attachment_id Image id.
+	 * @param sting  $size Size name.
+	 * @param string $icon Icon.
+	 *
+	 * @return array Size of image
+	 */
+	function astra_replace_trans_header_logo( $html, $blog_id ) {
+
+		$trans_logo = astra_get_option( 'transparent-header-logo' );
+
+		if ( '' !== $trans_logo ) {
+
+			/* Replace transparent header logo and width */
+			add_filter( 'wp_get_attachment_image_attributes', 'astra_replace_trans_header_attr', 10, 3 );
+
+			$custom_logo_id     = attachment_url_to_postid( $trans_logo );
+
+			$size = 'ast-transparent-logo-size';
+
+			if ( is_customize_preview() ) {
+				$size = 'full';
+			}
+
+			$html = sprintf(
+				'<a href="%1$s" class="custom-logo-link transparent-custom-logo" rel="home" itemprop="url">%2$s</a>',
+				esc_url( home_url( '/' ) ),
+				wp_get_attachment_image(
+					$custom_logo_id, $size, false, array(
+						'class'     => 'custom-logo',
+					)
+				)
+			);
+
+			remove_filter( 'wp_get_attachment_image_attributes', 'astra_replace_trans_header_attr' );
+		}
+
+		return $html;
+	}
+endif; // End if().
+
+/**
+ * Replace transparent header logo attributes.
+ */
+if ( ! function_exists( 'astra_replace_trans_header_attr' ) ) :
+
+	/**
+	 * Replace transparent header logo.
+	 *
+	 * @param array  $attr Image.
+	 * @param object $attachment Image obj.
+	 * @param sting  $size Size name.
+	 *
+	 * @return array Image attr.
+	 */
+	function astra_replace_trans_header_attr( $attr, $attachment, $size ) {
+
+		$trans_logo 		= astra_get_option( 'transparent-header-logo' );
+		$custom_logo_id     = attachment_url_to_postid( $trans_logo );
+
+		if ( $custom_logo_id == $attachment->ID ) {
+
+			if ( ! is_customize_preview() ) {
+				$attach_data = wp_get_attachment_image_src( $attachment->ID, 'ast-transparent-logo-size' );
+				if ( isset( $attach_data[0] ) ) {
+					$attr['src'] = $attach_data[0];
+				}
+			}
+
+			$retina_logo = astra_get_option( 'transparent-header-retina-logo' );
+
+			$attr['srcset'] = '';
+
+			if ( apply_filters( 'astra_transparent_header_retina', true ) && '' !== $retina_logo ) {
+				$cutom_logo     = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+				$cutom_logo_url = $cutom_logo[0];
+
+				if ( astra_check_is_ie() ) {
+					// Replace header logo url to retina logo url.
+					$attr['src'] = $retina_logo;
+				}
+
+				$attr['srcset'] = $cutom_logo_url . ' 1x, ' . $retina_logo . ' 2x';
+
+			}
+		}
+
+		return $attr;
+	}
+endif; // End if().
+
+/**
  * Astra Color Palletes.
  */
 if ( ! function_exists( 'astra_color_pallets' ) ) :
@@ -1275,5 +1378,33 @@ if ( ! function_exists( 'astra_color_pallets' ) ) :
 		);
 
 		return apply_filters( 'astra_color_palletes', $color_pallets );
+	}
+endif; // End if().
+
+/**
+ * Astra astra_is_transparent_header.
+ */
+if ( ! function_exists( 'astra_is_transparent_header' ) ) :
+
+	/**
+	 * Astra check if transparent header is enabled.
+	 *
+	 * @return boolean true/false.
+	 */
+	function astra_is_transparent_header() {
+
+		// Transparent Header.
+		$enable_trans_header = astra_get_option( 'transparent-header-enable' );
+		
+		if ( $enable_trans_header ) {
+
+			$disable_trans_archive 	= astra_get_option( 'transparent-header-disable-archive' );
+						
+			if( is_front_page() || ( is_archive() && '1' == $disable_trans_archive ) ) {
+				$enable_trans_header = false;
+			}
+		}
+
+		return apply_filters( 'astra_is_transparent_header', $enable_trans_header );
 	}
 endif; // End if().

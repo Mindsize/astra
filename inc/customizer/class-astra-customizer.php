@@ -249,8 +249,13 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			/* Generate Header Logo */
 			$custom_logo_id = get_theme_mod( 'custom_logo' );
 
-			Astra_Customizer::generate_logo_by_width( $custom_logo_id );
+			Astra_Customizer::generate_logo_by_width( $custom_logo_id, 'ast-logo-size' );
 
+			$trans_logo 	= astra_get_option( 'transparent-header-logo' );
+			$trans_logo_id  = attachment_url_to_postid( $trans_logo );
+
+			Astra_Customizer::generate_logo_by_width( $trans_logo_id, 'ast-transparent-logo-size' );
+			
 			do_action( 'astra_customizer_save' );
 		}
 
@@ -280,15 +285,44 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		}
 
 		/**
+		 * Add logo image sizes in filter.
+		 *
+		 * @since 1.0.0
+		 * @param array $sizes Sizes.
+		 * @param array $metadata attachment data.
+		 *
+		 * @return array
+		 */
+		static public function trans_logo_image_sizes( $sizes, $metadata ) {
+
+			$logo_width = astra_get_option( 'transparent-header-logo-width' );
+
+			if ( is_array( $sizes ) && '' != $logo_width ) {
+
+				$sizes['ast-transparent-logo-size'] = array(
+					'width'     => (int) $logo_width,
+					'height'    => 0,
+					'crop'      => false,
+				);
+			}
+
+			return $sizes;
+		}
+
+		/**
 		 * Generate logo image by its width.
 		 *
 		 * @since 1.0.0
 		 * @param int $custom_logo_id Logo id.
 		 */
-		static public function generate_logo_by_width( $custom_logo_id ) {
+		static public function generate_logo_by_width( $custom_logo_id, $size_name ) {
 			if ( $custom_logo_id ) {
 
-				add_filter( 'intermediate_image_sizes_advanced', 'Astra_Customizer::logo_image_sizes', 10, 2 );
+				if ( 'ast-logo-size' === $size_name ) {
+					add_filter( 'intermediate_image_sizes_advanced', 'Astra_Customizer::logo_image_sizes', 10, 2 );
+				}elseif ( 'ast-transparent-logo-size' === $size_name ) {
+					add_filter( 'intermediate_image_sizes_advanced', 'Astra_Customizer::trans_logo_image_sizes', 10, 2 );
+				}
 
 				$image = get_post( $custom_logo_id );
 
@@ -305,7 +339,11 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					}
 				}
 
-				remove_filter( 'intermediate_image_sizes_advanced', 'Astra_Customizer::logo_image_sizes', 10 );
+				if ( 'ast-logo-size' === $size_name ) {
+					remove_filter( 'intermediate_image_sizes_advanced', 'Astra_Customizer::logo_image_sizes', 10 );
+				}elseif ( 'ast-transparent-logo-size' === $size_name ) {
+					remove_filter( 'intermediate_image_sizes_advanced', 'Astra_Customizer::trans_logo_image_sizes', 10 );
+				}
 			}
 		}
 	}
