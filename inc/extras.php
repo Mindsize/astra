@@ -1394,17 +1394,27 @@ if ( ! function_exists( 'astra_is_transparent_header' ) ) :
 	function astra_is_transparent_header() {
 
 		// Transparent Header.
-		$enable_trans_header = astra_get_option( 'transparent-header-enable' );
+		$enable_trans_header 	= astra_get_option( 'transparent-header-enable' );
+		$trans_meta_option 		= astra_get_option_meta( 'theme-transparent-header-meta', 'default' );
+		$show_trans_header 		= false;
 		
+		if ( 'enabled' === $trans_meta_option ) {
+			$enable_trans_header = true;
+		}elseif ( 'disabled' === $trans_meta_option ) {
+			$enable_trans_header = false;
+		}
+
 		if ( $enable_trans_header ) {
+
+			$show_trans_header 		= true;
 
 			$disable_trans_archive 	= astra_get_option( 'transparent-header-disable-archive' );
 						
 			if( is_front_page() || ( is_archive() && '1' == $disable_trans_archive ) ) {
-				$enable_trans_header = false;
+				$show_trans_header = false;
 			}
 		}
 
-		return apply_filters( 'astra_is_transparent_header', $enable_trans_header );
+		return apply_filters( 'astra_is_transparent_header', $show_trans_header );
 	}
 endif; // End if().

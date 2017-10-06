@@ -91,6 +91,9 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'ast-featured-img' => array(
 						'sanitize' => 'FILTER_DEFAULT',
 					),
+					'theme-transparent-header-meta' => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
 				)
 			);
 		}
@@ -159,6 +162,8 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			$footer_widgets      = ( isset( $meta['footer-adv-display']['default'] ) ) ? $meta['footer-adv-display']['default'] : '';
 			$primary_header      = ( isset( $meta['ast-main-header-display']['default'] ) ) ? $meta['ast-main-header-display']['default'] : '';
 			$ast_featured_img    = ( isset( $meta['ast-featured-img']['default'] ) ) ? $meta['ast-featured-img']['default'] : '';
+			$trans_header_meta   = ( isset( $meta['theme-transparent-header-meta']['default'] ) ) ? $meta['theme-transparent-header-meta']['default'] : 'default';
+
 			do_action( 'astra_meta_box_markup_before', $meta );
 
 			/**
@@ -256,6 +261,21 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				<?php do_action( 'astra_meta_box_markup_disable_sections_after', $meta ); ?>
 			</span>
 
+			<?php
+			/**
+			 * Option: Transparent Header
+			 */
+			?>
+			<div class="transparent-header-wrapper">
+				<p class="post-attributes-label-wrapper">
+					<strong> <?php esc_html_e( 'Transparent Header', 'astra' ); ?> </strong><br/>
+				</p>
+				<select name="theme-transparent-header-meta" id="theme-transparent-header-meta">
+					<option value="default" <?php selected( $trans_header_meta, 'default' ); ?>> <?php esc_html_e( 'Customizer Setting', 'astra' ); ?> </option>
+					<option value="enabled" <?php selected( $trans_header_meta, 'enabled' ); ?>> <?php esc_html_e( 'Enabled', 'astra' ); ?> </option>
+					<option value="disabled" <?php selected( $trans_header_meta, 'disabled' ); ?>> <?php esc_html_e( 'Disabled', 'astra' ); ?> </option>
+				</select>
+			</div>
 			<?php
 
 			do_action( 'astra_meta_box_markup_after', $meta );
