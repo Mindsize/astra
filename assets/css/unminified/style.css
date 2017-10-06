@@ -3514,6 +3514,32 @@ li.ast-masthead-custom-menu-items .ast-search-icon .astra-search-icon {
   padding-bottom: 1.5em;
 }
 
+/*----------  Transparent Header  ----------*/
+/**
+ * 	Transparent Header
+ *
+ * @import
+ * 1 - Transparent Header Main
+ */
+/* 1 - Transparent Header Main */
+/**
+ *  Transparent Header Sections
+ *
+ *  All sections within the header.
+ *
+ * Contents
+ *
+ */
+.ast-theme-transparent-header #masthead {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.ast-theme-transparent-header .main-header-bar {
+  background-color: transparent;
+}
+
 /*----------  Primary  ----------*/
 .sticky {
   display: block;

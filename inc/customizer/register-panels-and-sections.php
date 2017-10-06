@@ -44,6 +44,14 @@
 		);
 
 		$wp_customize->add_section(
+			'section-transparent-header', array(
+				'title'    => __( 'Transparent Header', 'astra' ),
+				'panel'    => 'panel-layout',
+				'priority' => 33,
+			)
+		);
+
+		$wp_customize->add_section(
 			'section-footer-small', array(
 				'title'    => __( 'Footer Bar', 'astra' ),
 				'panel'    => 'panel-layout',

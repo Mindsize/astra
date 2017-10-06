@@ -143,6 +143,12 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 					'header-main-layout-width'          => 'content',
 					'header-main-menu-label'            => '',
 					'header-main-menu-align'            => 'inline',
+					// Header - Transparent.
+					'transparent-header-logo'			 => '',
+					'transparent-header-retina-logo'	 => '',
+					'transparent-header-logo-width'		 => '',
+					'transparent-header-enable'			 => 0,
+					'transparent-header-disable-archive' => 0,
 					// Site Layout.
 					'site-layout'                      => 'ast-full-width-layout',
 					'site-content-width'               => 1200,

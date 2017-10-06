@@ -89,6 +89,22 @@ if ( ! function_exists( 'astra_body_classes' ) ) {
 		// Current Astra verion.
 		$classes[]   = esc_attr( 'astra-' . ASTRA_THEME_VERSION );
 
+		// Transparent Header.
+		$enable_trans_header 	= astra_get_option( 'transparent-header-enable' );
+		if ( '1' == $enable_trans_header ) {
+
+			$disable_trans_archive 	= astra_get_option( 'transparent-header-disable-archive' );
+			$show_trans_header 		= true;
+			
+			if( is_front_page() || ( is_archive() && '1' == $disable_trans_archive ) ) {
+				$show_trans_header = false;
+			}
+
+			if ( $show_trans_header ) {
+				$classes[] = 'ast-theme-transparent-header';
+			}
+		}
+
 		return $classes;
 	}
 }// End if().
