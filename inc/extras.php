@@ -1410,7 +1410,7 @@ if ( ! function_exists( 'astra_is_transparent_header' ) ) :
 
 			$disable_trans_archive 	= astra_get_option( 'transparent-header-disable-archive' );
 						
-			if( is_front_page() || ( is_archive() && '1' == $disable_trans_archive ) ) {
+			if( is_home() || ( is_archive() && '1' == $disable_trans_archive ) ) {
 				$show_trans_header = false;
 			}
 		}
