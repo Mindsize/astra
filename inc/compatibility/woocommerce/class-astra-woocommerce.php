@@ -680,9 +680,14 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 					'color' => esc_attr( $theme_color ),
 				),
 
-				'.ast-woocommerce-cart-menu .ast-cart-menu-wrap .count, .ast-woocommerce-cart-menu .ast-cart-menu-wrap .count:after' => array(
-					'border-color' => esc_attr( $theme_color ),
-					'color'        => esc_attr( $theme_color ),
+				'.ast-woocommerce-cart-menu .ast-cart-menu-wrap .count' => array(
+					'border-color'     => esc_attr( $theme_color ),
+					'background-color' => esc_attr( $theme_color ),
+					'color'            => esc_attr( $btn_color ),
+				),
+
+				'.ast-woocommerce-cart-menu .ast-cart-menu-wrap .count, .ast-woocommerce-cart-menu .ast-cart-menu-wrap .cart-line-1, .ast-woocommerce-cart-menu .ast-cart-menu-wrap .cart-line-2, .ast-woocommerce-cart-menu .ast-cart-menu-wrap .cart-line-3, .ast-woocommerce-cart-menu .ast-cart-menu-wrap .cart-wheel' => array(
+					'background-color' => esc_attr( $theme_color ),
 				),
 
 				'.ast-woocommerce-cart-menu .ast-cart-menu-wrap:hover .count' => array(
@@ -869,7 +874,11 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 			?>
 			<a class="cart-container" href="<?php echo esc_url( wc_get_cart_url() ); ?>" title="<?php esc_attr_e( 'View your shopping cart', 'astra' ); ?>">
 				<div class="ast-cart-menu-wrap">
-					<span class="count"> <?php echo WC()->cart->get_cart_contents_count(); ?> </span>
+					<span class="count"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
+					<span class="cart-line-1"></span>
+					<span class="cart-line-2"></span>
+					<span class="cart-line-3"></span>
+					<span class="cart-wheel"></span>
 				</div>
 			</a>
 		<?php
