@@ -333,6 +333,11 @@ p.demo_store a,
   vertical-align: middle;
 }
 
+.ast-woocommerce-cart-menu .ast-site-header-cart-li {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .ast-woocommerce-cart-menu .ast-cart-menu-wrap {
   line-height: 1;
   width: 3em;
