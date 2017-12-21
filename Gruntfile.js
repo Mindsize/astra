@@ -138,7 +138,7 @@ module.exports = function (grunt) {
                     src: [
                         'assets/css/unminified/style.css',
                         'assets/css/unminified/*.css',
-                        'assets/css/unminified/compatibility/*.css'
+                        'assets/css/unminified/compatibility/**/*.css'
                     ]
                 }
             },
