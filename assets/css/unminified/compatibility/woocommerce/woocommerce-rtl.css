@@ -233,6 +233,7 @@ p.demo_store a,
 
 .ast-woocommerce-cart-menu .ast-site-header-cart .widget_shopping_cart:after, .ast-woocommerce-cart-menu .ast-site-header-cart .widget_shopping_cart:before {
   bottom: 100%;
+  bottom: calc( 100% - 1px);
   right: auto;
   left: 8px;
   border: solid transparent;
@@ -253,9 +254,9 @@ p.demo_store a,
 .ast-woocommerce-cart-menu .ast-site-header-cart .widget_shopping_cart:before {
   border-color: rgba(230, 230, 230, 0);
   border-bottom-color: #E6E6E6;
-  border-width: 8px;
+  border-width: 9px;
   margin-right: -5px;
-  left: 5px;
+  left: 4px;
 }
 
 .ast-woocommerce-cart-menu .ast-site-header-cart .widget_shopping_cart .product_list_widget {
