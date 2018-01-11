@@ -236,6 +236,10 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 			/* Cart */
 			$defaults['enable-cart-upsells'] = true;
 
+			/* Button */
+			$defaults['woo-button-v-padding'] = 10;
+			$defaults['woo-button-h-padding'] = 20;
+
 			return $defaults;
 		}
 
@@ -619,6 +623,10 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 
 			$cart_h_color = astra_get_foreground_color( $link_h_color );
 
+			// Woocommerce button padding.
+			$woo_btn_vertical_padding   = astra_get_option( 'woo-button-v-padding' );
+			$woo_btn_horizontal_padding = astra_get_option( 'woo-button-h-padding' );
+
 			$css_output = array(
 				'.woocommerce span.onsale'                => array(
 					'background-color' => $theme_color,
@@ -659,6 +667,11 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 				'.woocommerce a.button, .woocommerce button.button, .woocommerce .woocommerce-message a.button, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce input.button,.woocommerce-cart table.cart td.actions .button, .woocommerce form.checkout_coupon .button, .woocommerce #respond input#submit' => array(
 					'border-radius' => astra_get_css_value( $btn_border_radius, 'px' ),
 					'padding'       => astra_get_css_value( $btn_vertical_padding, 'px' ) . ' ' . astra_get_css_value( $btn_horizontal_padding, 'px' ),
+				),
+
+				// Woocommerce Button padding.
+				'.woocommerce a.button, .woocommerce button.button, .woocommerce .woocommerce-message a.button, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce input.button,.woocommerce-cart table.cart td.actions .button, .woocommerce form.checkout_coupon .button, .woocommerce #respond input#submit' => array(
+					'padding'       => astra_get_css_value( $woo_btn_vertical_padding, 'px' ) . ' ' . astra_get_css_value( $woo_btn_horizontal_padding, 'px' ),
 				),
 				'.woocommerce .star-rating, .woocommerce .comment-form-rating .stars a, .woocommerce .star-rating::before' => array(
 					'color' => $theme_color,
